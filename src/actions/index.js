@@ -25,7 +25,6 @@ export const signOut = () => {
 
 export const createStream = formValues => async (dispatch, getState) => {  // dispatch и getState - стандартные параметры на вход.
     const { userId } = getState().auth;
-    console.log({...formValues, userId});
     const response = await streams.post('/streams', {...formValues, userId});
 
     dispatch({type: CREATE_STREAM, payload: response.data});
@@ -35,19 +34,19 @@ export const createStream = formValues => async (dispatch, getState) => {  // di
 export const deleteStream = id => async dispatch => {
     await streams.delete(`/streams/${id}`);
 
-    dispatch({type: DELETE_STREAM, payload: id})
+    dispatch({type: DELETE_STREAM, payload: id});
+    history.push('/');
 };
 
 export const editStream = (id, formValues) => async dispatch => {
-    const response = await streams.put(`/streams/${id}`, formValues);
+    const response = await streams.patch(`/streams/${id}`, formValues);
 
-    dispatch({type: EDIT_STREAM, payload: response.data})
+    dispatch({type: EDIT_STREAM, payload: response.data});
+    history.push('/');
 };
 
 export const fetchStream = id => async dispatch => {
     const response = await streams.get(`/streams/${id}`);
-    console.log('1111');
-    console.log(response.data);
     dispatch({type: FETCH_STREAM, payload: response.data})
 };
 
